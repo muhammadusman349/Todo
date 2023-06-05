@@ -1,0 +1,21 @@
+Title :{{ dataset.title }}<br> <br>
+Description :{{ dataset.description }}<br> <br>
+
+Priority :{{ dataset.priority }}<br> <br>
+Due Date :{{ dataset.due_date }}<br> <br>
+Assign To :{{ dataset.assign_to.all|join:", "  }}<br><br> 
+Created By :{{ dataset.created_by }}<br> on {{ dataset.due_date }}<br><br>
+
+
+<form method="POST" action="{% url 'task-update' id=dataset.id %}">
+  {% csrf_token %}
+  <label for="status">Status:</label>
+  <select name="status">
+    {% for choice in dataset.STATUS %}
+      <option value="{{ choice.0 }}" {% if choice.0 == dataset.status %}selected{% endif %}>{{ choice.1 }}</option>
+    {% endfor %}
+  </select><br><br>
+  <input type="submit" value="Update">
+</form>
+
+<a href={% url 'homelist'  %}>Back </a>

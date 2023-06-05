@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>  
+
+
+
+        <h1>HOME</h1>
+   
+        
+       
+        
+       
+           
+{% if perms.task.can_create %}
+
+ <a href="{% url 'create'  %}">Add Task</a><br><br> 
+ {% endif %}
+
+<html>
+ <head>
+    <style>
+    {
+        box-sizing: border-box;
+    }
+    /* Set additional styling options for the columns */
+    .column {
+    float: left;
+    }
+
+    /* Set width length for the left, right and middle columns */
+    .left {
+    width: 33.3%;
+    }
+
+    .middle {
+    width: 33.3%;
+    }
+    
+    .right {
+    width: 33.3%;
+    }
+
+    .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    }
+    </style>
+ </head>
+
+ 
+ <body>
+    <div class="row">
+      <div class="column left">
+        {% comment %} <div class="column left" style="background-color:#DBF9FC;" >  {% endcomment %}
+                      
+        
+          
+          <h2>No Progress</h2>
+       
+
+            {% for obj in dataset %}
+             
+                {% if obj.status == 'No Progress'  %}
+              <p>  <a  href="{% url 'tdetail' obj.id %}">{{obj.title}}</a> ({{ obj.assign_to.all|join:", "  }})</p>
+
+
+              <form method="POST" action="{% url 'task-update' id=obj.id %}">
+                {% csrf_token %}
+              
+                <select name="status" onchange="this.form.submit();"> 
+                  {% for choice in obj.STATUS %}
+                    <option value="{{ choice.0 }}" {% if choice.0 == dataset.status %}selected{% endif %}>{{ choice.1 }}</option>
+                    
+                  {% endfor %}
+                  
+                </select><br><br>
+              </form>
+
+
+
+
+   
+                {% endif %}
+            {% endfor %}
+
+
+            
+
+        </div>
+         
+        <div class="column middle">
+
+        {% comment %} <div class="column middle" style="background-color:#96D1CD;">  {% endcomment %}
+
+            <h2>In Progress</h2>
+            
+
+            {% for obj in dataset %}
+
+            {% if obj.status == 'In Progress' %}
+            <p>  <a  href="{% url 'tdetail' obj.id %}">{{obj.title}}<a/> ({{ obj.assign_to.all|join:", "  }})</p>
+
+              <form method="POST" action="{% url 'task-update' id=obj.id %}">
+                {% csrf_token %}
+              
+                <select name="status" onchange ="this.form.submit();"> 
+
+                  {% for choice in obj.STATUS %}
+                    <option value="{{ choice.0 }}" {% if choice.0 == obj.status %}selected{% endif %}>{{ choice.1 }}</option>
+                  {% endfor %}
+                </select><br><br>
+               
+              </form>
+
+
+
+             {% endif %}
+             {% endfor %}
+
+        </div>
+
+        <div class="column right">
+
+        {% comment %} <div class="column right" style="background-color:#74C3E1;">  {% endcomment %}
+        
+           <h2>Completed</h2>
+            {% for obj in dataset %}
+            {% if obj.status == 'Completed' %}
+            <p>  <a  href="{% url 'tdetail' obj.id %}">{{obj.title}}<a/> ({{ obj.assign_to.all|join:", "  }})</p>
+
+             
+              <form method="POST" action="{% url 'task-update' id=obj.id %}">
+                {% csrf_token %}
+                
+                
+                    <select name="status" onchange="this.form.submit();"> 
+
+                    
+                  {% for choice in obj.STATUS %}
+                    <option value="{{ choice.0 }}" {% if choice.0 == obj.status %}selected{% endif %}>{{ choice.1 }}</option>
+                  {% endfor %}
+                
+                </select><br><br>
+
+
+
+            
+              </form>
+             
+
+            
+             {% endif %}
+             {% endfor %}
+
+        </div>
+    </div>
+ </body>
+</html>
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+    
+
+
+        
